@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProjetsEtapes index{% endblock %}
+
+{% block body %}
+    <h1>ProjetsEtapes index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdProjet</th>
+                <th>IdEtape</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for projets_etape in projets_etapes %}
+            <tr>
+                <td>{{ projets_etape.id }}</td>
+                <td>{{ projets_etape.idProjet }}</td>
+                <td>{{ projets_etape.idEtape }}</td>
+                <td>
+                    <a href="{{ path('projets_etapes_show', {'id': projets_etape.id}) }}">show</a>
+                    <a href="{{ path('projets_etapes_edit', {'id': projets_etape.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('projets_etapes_new') }}">Create new</a>
+{% endblock %}

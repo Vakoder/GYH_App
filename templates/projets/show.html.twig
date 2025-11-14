@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+    <h1>Projets</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ projet.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ projet.nom }}</td>
+            </tr>
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IdEtat</th>
+                <td>{{ projet.idEtat }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('projets_index') }}">back to list</a>
+
+    <a href="{{ path('projets_edit', {'id': projet.id}) }}">edit</a>
+
+    {{ include('projets/_delete_form.html.twig') }}
+{% endblock %}
