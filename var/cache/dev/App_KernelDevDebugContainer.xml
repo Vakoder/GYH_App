@@ -20,7 +20,6 @@
       <parameter key="TwigBundle">Symfony\Bundle\TwigBundle\TwigBundle</parameter>
       <parameter key="TwigExtraBundle">Twig\Extra\TwigExtraBundle\TwigExtraBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
-      <parameter key="MonologBundle">Symfony\Bundle\MonologBundle\MonologBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="MakerBundle">Symfony\Bundle\MakerBundle\MakerBundle</parameter>
       <parameter key="WebpackEncoreBundle">Symfony\WebpackEncoreBundle\WebpackEncoreBundle</parameter>
@@ -53,10 +52,6 @@
       <parameter key="WebProfilerBundle" type="collection">
         <parameter key="path">/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/web-profiler-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\WebProfilerBundle</parameter>
-      </parameter>
-      <parameter key="MonologBundle" type="collection">
-        <parameter key="path">/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/monolog-bundle/src</parameter>
-        <parameter key="namespace">Symfony\Bundle\MonologBundle</parameter>
       </parameter>
       <parameter key="DebugBundle" type="collection">
         <parameter key="path">/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/debug-bundle</parameter>
@@ -102,9 +97,6 @@
       <parameter key="Symfony\Bundle\WebProfilerBundle\WebProfilerBundle" type="collection">
         <parameter key="dev">true</parameter>
         <parameter key="test">true</parameter>
-      </parameter>
-      <parameter key="Symfony\Bundle\MonologBundle\MonologBundle" type="collection">
-        <parameter key="all">true</parameter>
       </parameter>
       <parameter key="Symfony\Bundle\DebugBundle\DebugBundle" type="collection">
         <parameter key="dev">true</parameter>
@@ -225,24 +217,6 @@
     <parameter key="twig.default_path">/Users/theoalanore/Documents/GitHub/GYH_App/templates</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
-    <parameter key="monolog.use_microseconds">true</parameter>
-    <parameter key="monolog.swift_mailer.handlers" type="collection"/>
-    <parameter key="monolog.handlers_to_channels" type="collection">
-      <parameter key="monolog.handler.console" type="collection">
-        <parameter key="type">exclusive</parameter>
-        <parameter key="elements" type="collection">
-          <parameter>event</parameter>
-          <parameter>doctrine</parameter>
-          <parameter>console</parameter>
-        </parameter>
-      </parameter>
-      <parameter key="monolog.handler.main" type="collection">
-        <parameter key="type">exclusive</parameter>
-        <parameter key="elements" type="collection">
-          <parameter>event</parameter>
-        </parameter>
-      </parameter>
-    </parameter>
     <parameter key="env(VAR_DUMPER_SERVER)">127.0.0.1:9912</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
@@ -525,7 +499,7 @@
       <tag name="container.hot_path"/>
       <tag name="container.hot_path"/>
       <argument>error_controller</argument>
-      <argument type="service" id="monolog.logger.request" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>true</argument>
       <argument type="collection"/>
       <argument type="collection"/>
@@ -624,7 +598,6 @@
         <argument key="translation.locale_switcher" type="service" id="translation.locale_switcher" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
         <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
-        <argument key="debug.log_processor" type="service" id="debug.log_processor" on-invalid="ignore_uninitialized"/>
         <argument key="session_listener" type="service" id="session_listener" on-invalid="ignore_uninitialized"/>
         <argument key="form.choice_list_factory.cached" type="service" id="form.choice_list_factory.cached" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
@@ -644,8 +617,6 @@
         <argument key="debug.security.firewall.authenticator.main" type="service" id="debug.security.firewall.authenticator.main" on-invalid="ignore_uninitialized"/>
         <argument key="twig" type="service" id="twig" on-invalid="ignore_uninitialized"/>
         <argument key="twig.form.engine" type="service" id="twig.form.engine" on-invalid="ignore_uninitialized"/>
-        <argument key="monolog.handler.main" type="service" id="monolog.handler.main" on-invalid="ignore_uninitialized"/>
-        <argument key="monolog.handler.console" type="service" id="monolog.handler.console" on-invalid="ignore_uninitialized"/>
         <argument key="webpack_encore.tag_renderer" type="service" id="webpack_encore.tag_renderer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.webpack_encore" type="service" id="cache.webpack_encore" on-invalid="ignore_uninitialized"/>
         <argument key="webpack_encore.entrypoint_lookup[_default]" type="service" id="webpack_encore.entrypoint_lookup[_default]" on-invalid="ignore_uninitialized"/>
@@ -696,9 +667,6 @@
           <argument>reset</argument>
         </argument>
         <argument key="debug.event_dispatcher" type="collection">
-          <argument>reset</argument>
-        </argument>
-        <argument key="debug.log_processor" type="collection">
           <argument>reset</argument>
         </argument>
         <argument key="session_listener" type="collection">
@@ -758,12 +726,6 @@
         </argument>
         <argument key="twig.form.engine" type="collection">
           <argument>?reset</argument>
-        </argument>
-        <argument key="monolog.handler.main" type="collection">
-          <argument>reset</argument>
-        </argument>
-        <argument key="monolog.handler.console" type="collection">
-          <argument>reset</argument>
         </argument>
         <argument key="webpack_encore.tag_renderer" type="collection">
           <argument>reset</argument>
@@ -874,7 +836,7 @@
           <factory class="Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer" method="getAndCleanOutputBuffer"/>
         </service>
       </argument>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="error_handler.error_renderer.cli" class="Symfony\Component\ErrorHandler\ErrorRenderer\CliErrorRenderer"/>
     <service id="error_handler.error_renderer.default" class="Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface">
@@ -890,7 +852,7 @@
       <tag name="monolog.logger" channel="console"/>
       <tag name="kernel.event_subscriber"/>
       <tag name="container.no_preload"/>
-      <argument type="service" id="monolog.logger.console" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="console.suggest_missing_package_subscriber" class="Symfony\Bundle\FrameworkBundle\EventListener\SuggestMissingPackageSubscriber">
       <tag name="kernel.event_subscriber"/>
@@ -1471,7 +1433,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.adapter.apcu" class="Symfony\Component\Cache\Adapter\ApcuAdapter" abstract="true">
@@ -1481,7 +1443,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.filesystem" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" abstract="true">
@@ -1492,7 +1454,7 @@
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/share/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.psr6" class="Symfony\Component\Cache\Adapter\ProxyAdapter" abstract="true">
@@ -1509,7 +1471,7 @@
       <argument>0</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.redis_tag_aware" class="Symfony\Component\Cache\Adapter\RedisTagAwareAdapter" abstract="true">
@@ -1520,7 +1482,7 @@
       <argument>0</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.memcached" class="Symfony\Component\Cache\Adapter\MemcachedAdapter" abstract="true">
@@ -1531,7 +1493,7 @@
       <argument>0</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.doctrine_dbal" class="Symfony\Component\Cache\Adapter\DoctrineDbalAdapter" abstract="true">
@@ -1543,7 +1505,7 @@
       <argument type="collection"/>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.pdo" class="Symfony\Component\Cache\Adapter\PdoAdapter" abstract="true">
@@ -1555,7 +1517,7 @@
       <argument type="collection"/>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.array" class="Symfony\Component\Cache\Adapter\ArrayAdapter" abstract="true">
@@ -1563,7 +1525,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument>0</argument>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.default_marshaller" class="Symfony\Component\Cache\Marshaller\DefaultMarshaller">
@@ -1676,7 +1638,7 @@
       <argument type="collection"/>
       <argument>6</argument>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.http_client" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
       <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
     </service>
@@ -1761,31 +1723,31 @@
       <tag name="monolog.logger" channel="mailer"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.native" class="Symfony\Component\Mailer\Transport\NativeTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.null" class="Symfony\Component\Mailer\Transport\NullTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.sendmail" class="Symfony\Component\Mailer\Transport\SendmailTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.smtp" class="Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="translator.default" class="Symfony\Bundle\FrameworkBundle\Translation\Translator">
       <tag name="kernel.locale_aware"/>
@@ -2131,7 +2093,6 @@
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/twig-bundle/translations</argument>
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/twig/extra-bundle/translations</argument>
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/web-profiler-bundle/translations</argument>
-          <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/monolog-bundle/src/translations</argument>
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/debug-bundle/translations</argument>
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/maker-bundle/translations</argument>
           <argument>/Users/theoalanore/Documents/GitHub/GYH_App/vendor/symfony/webpack-encore-bundle/src/translations</argument>
@@ -2149,7 +2110,6 @@
             <argument>vendor/symfony/twig-bundle/translations</argument>
             <argument>vendor/twig/extra-bundle/translations</argument>
             <argument>vendor/symfony/web-profiler-bundle/translations</argument>
-            <argument>vendor/symfony/monolog-bundle/src/translations</argument>
             <argument>vendor/symfony/debug-bundle/translations</argument>
             <argument>vendor/symfony/maker-bundle/translations</argument>
             <argument>vendor/symfony/webpack-encore-bundle/src/translations</argument>
@@ -2169,7 +2129,7 @@
     <service id="translator.logging" class="Symfony\Component\Translation\LoggingTranslator">
       <tag name="monolog.logger" channel="translation"/>
       <argument type="service" id="translator.logging.inner"/>
-      <argument type="service" id="monolog.logger.translation"/>
+      <argument type="service" id="logger"/>
     </service>
     <service id="translator.formatter.default" class="Symfony\Component\Translation\Formatter\MessageFormatter">
       <argument type="service" id="identity_translator"/>
@@ -2475,12 +2435,12 @@
     </service>
     <service id="debug.error_handler_configurator" class="Symfony\Component\HttpKernel\Debug\ErrorHandlerConfigurator" public="true">
       <tag name="monolog.logger" channel="php"/>
-      <argument type="service" id="monolog.logger.php"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>null</argument>
       <argument>-1</argument>
       <argument>true</argument>
       <argument>true</argument>
-      <argument type="service" id="monolog.logger.deprecation"/>
+      <argument>null</argument>
     </service>
     <service id="debug.debug_handlers_listener" class="Symfony\Component\HttpKernel\EventListener\DebugHandlersListener">
       <tag name="kernel.event_subscriber"/>
@@ -2506,7 +2466,7 @@
       <tag name="container.decorator" id="event_dispatcher" inner="debug.event_dispatcher.inner"/>
       <argument type="service" id="debug.event_dispatcher.inner"/>
       <argument type="service" id="debug.stopwatch"/>
-      <argument type="service" id="monolog.logger.event" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id=".virtual_request_stack" on-invalid="null"/>
       <argument type="service" id="profiler.is_disabled_state_checker" on-invalid="null"/>
       <call method="addListener">
@@ -2952,22 +2912,6 @@
       <call method="addListener">
         <argument>console.command</argument>
         <argument type="collection">
-          <argument type="service_closure" id="monolog.handler.console"/>
-          <argument>onCommand</argument>
-        </argument>
-        <argument>255</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.terminate</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="monolog.handler.console"/>
-          <argument>onTerminate</argument>
-        </argument>
-        <argument>-255</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
           <argument type="service_closure" id="debug.dump_listener"/>
           <argument>configure</argument>
         </argument>
@@ -3036,14 +2980,6 @@
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
       <argument type="service" id=".service_locator.oLuvPav"/>
-    </service>
-    <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
-      <tag name="kernel.reset" method="reset"/>
-      <argument type="service" id=".virtual_request_stack"/>
-    </service>
-    <service id="debug.debug_logger_configurator" class="Symfony\Component\HttpKernel\Log\DebugLoggerConfigurator">
-      <argument type="service" id="debug.log_processor"/>
-      <argument>%env(bool:default::key:web:default:kernel.runtime_mode:)%</argument>
     </service>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver">
       <call method="addLoader">
@@ -3142,7 +3078,7 @@
     <service id="router.default" class="Symfony\Bundle\FrameworkBundle\Routing\Router">
       <tag name="monolog.logger" channel="router"/>
       <tag name="container.service_subscriber" id="routing.loader"/>
-      <argument type="service" id=".service_locator.3uPd9MT.router.default"/>
+      <argument type="service" id=".service_locator.TVmQFtt.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
         <argument key="cache_dir">/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev</argument>
@@ -3156,7 +3092,7 @@
       </argument>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="parameter_bag" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.router" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <argument>en</argument>
       <call method="setConfigCacheFactory">
         <argument type="service" id="config_cache_factory"/>
@@ -3195,7 +3131,7 @@
       <argument type="service" id="router.default"/>
       <argument type="service" id="request_stack"/>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
-      <argument type="service" id="monolog.logger.request" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App</argument>
       <argument>true</argument>
     </service>
@@ -4240,7 +4176,7 @@
       <tag name="container.private" package="symfony/framework-bundle" version="5.4"/>
       <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="profiler.storage"/>
-      <argument type="service" id="monolog.logger.profiler" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>true</argument>
       <call method="add">
         <argument type="service" id="data_collector.request"/>
@@ -4390,7 +4326,7 @@
     <service id="data_collector.logger" class="Symfony\Component\HttpKernel\DataCollector\LoggerDataCollector">
       <tag name="monolog.logger" channel="profiler"/>
       <tag name="data_collector" template="@WebProfiler/Collector/logger.html.twig" id="logger" priority="300"/>
-      <argument type="service" id="monolog.logger.profiler" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/App_KernelDevDebugContainer</argument>
       <argument type="service" id=".virtual_request_stack" on-invalid="ignore"/>
     </service>
@@ -4617,7 +4553,6 @@
       </call>
       <call method="setMiddlewares">
         <argument type="collection">
-          <argument type="service" id="doctrine.dbal.logging_middleware.default"/>
           <argument type="service" id="doctrine.dbal.debug_middleware.default"/>
           <argument type="service" id="doctrine.dbal.idle_connection_middleware.default"/>
         </argument>
@@ -4687,11 +4622,6 @@
       </argument>
     </service>
     <service id="doctrine.dbal.connection_expiries" class="ArrayObject"/>
-    <service id="doctrine.dbal.logging_middleware" class="Doctrine\DBAL\Logging\Middleware" abstract="true">
-      <tag name="monolog.logger" channel="doctrine"/>
-      <tag name="doctrine.middleware" connection="default" priority="10"/>
-      <argument type="service" id="monolog.logger.doctrine"/>
-    </service>
     <service id="doctrine.debug_data_holder" class="Doctrine\Bundle\DoctrineBundle\Middleware\BacktraceDebugDataHolder">
       <tag name="kernel.reset" method="reset"/>
       <argument type="collection">
@@ -5015,7 +4945,7 @@
     <service id="doctrine.migrations.dependency_factory" class="Doctrine\Migrations\DependencyFactory" constructor="fromEntityManager">
       <argument type="service" id="doctrine.migrations.configuration_loader"/>
       <argument type="service" id="doctrine.migrations.entity_manager_registry_loader"/>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <call method="setDefinition">
         <argument>Doctrine\Migrations\Version\MigrationFactory</argument>
         <argument type="service_closure" id="doctrine.migrations.migrations_factory"/>
@@ -5424,7 +5354,7 @@
     <service id="security.channel_listener" class="Symfony\Component\Security\Http\Firewall\ChannelListener">
       <tag name="monolog.logger" channel="security"/>
       <argument type="service" id="security.access_map"/>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service">
         <service class="int">
           <factory service="router.request_context" method="getHttpPort"/>
@@ -5444,7 +5374,7 @@
         <argument type="service" id="security.user.provider.concrete.users_in_memory"/>
       </argument>
       <argument type="abstract">Provider Key</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
       <argument type="service" id="security.authentication.trust_resolver"/>
       <argument type="collection">
@@ -5475,7 +5405,7 @@
       <argument type="service" id="security.authentication.success_handler"/>
       <argument type="service" id="security.authentication.failure_handler"/>
       <argument type="collection"/>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
     </service>
     <service id="security.authentication.custom_success_handler" class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationSuccessHandler" abstract="true">
@@ -5486,7 +5416,7 @@
     <service id="security.authentication.success_handler" class="Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler" abstract="true">
       <argument type="service" id="security.http_utils"/>
       <argument type="collection"/>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="security.authentication.custom_failure_handler" class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler" abstract="true">
       <argument type="abstract">The custom failure handler service</argument>
@@ -5497,7 +5427,7 @@
       <argument type="service" id="http_kernel"/>
       <argument type="service" id="security.http_utils"/>
       <argument type="collection"/>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="security.exception_listener" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" abstract="true">
       <tag name="monolog.logger" channel="security"/>
@@ -5508,7 +5438,7 @@
       <argument type="service" id="security.authentication.entry_point" on-invalid="null"/>
       <argument>null</argument>
       <argument type="service" id="security.access.denied_handler" on-invalid="null"/>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>false</argument>
     </service>
     <service id="security.authentication.switchuser_listener" class="Symfony\Component\Security\Http\Firewall\SwitchUserListener" abstract="true">
@@ -5518,7 +5448,7 @@
       <argument type="abstract">User Checker</argument>
       <argument type="abstract">Provider Key</argument>
       <argument type="service" id="debug.security.access.decision_manager"/>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>_switch_user</argument>
       <argument>ROLE_ALLOWED_TO_SWITCH</argument>
       <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
@@ -5543,7 +5473,7 @@
       <argument type="service" id="security.token_storage"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="abstract">provider key</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>true</argument>
       <argument type="constant">Symfony\Component\Security\Http\Authentication\ExposeSecurityLevel::None</argument>
       <argument type="abstract">required badges</argument>
@@ -5590,7 +5520,7 @@
       <tag name="monolog.logger" channel="security"/>
       <argument type="abstract">realm name</argument>
       <argument type="abstract">user provider</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="security.authenticator.form_login" class="Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator" abstract="true">
       <argument type="service" id="security.http_utils"/>
@@ -5617,7 +5547,7 @@
       <argument type="abstract">firewall name</argument>
       <argument type="abstract">user key</argument>
       <argument type="abstract">credentials key</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="abstract">credentials user identifier</argument>
     </service>
     <service id="security.authenticator.remote_user" class="Symfony\Component\Security\Http\Authenticator\RemoteUserAuthenticator" abstract="true">
@@ -5626,7 +5556,7 @@
       <argument type="service" id="security.token_storage"/>
       <argument type="abstract">firewall name</argument>
       <argument type="abstract">user key</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="security.access_token_extractor.header" class="Symfony\Component\Security\Http\AccessToken\HeaderAccessTokenExtractor"/>
     <service id="security.access_token_extractor.query_string" class="Symfony\Component\Security\Http\AccessToken\QueryAccessTokenExtractor"/>
@@ -5648,7 +5578,7 @@
     </service>
     <service id="security.access_token_handler.oidc_user_info" class="Symfony\Component\Security\Http\AccessToken\Oidc\OidcUserInfoTokenHandler" abstract="true">
       <argument type="abstract">http client</argument>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="abstract">claim</argument>
     </service>
     <service id="security.access_token_handler.oidc" class="Symfony\Component\Security\Http\AccessToken\Oidc\OidcTokenHandler" abstract="true">
@@ -5657,7 +5587,7 @@
       <argument type="abstract">audience</argument>
       <argument type="abstract">issuers</argument>
       <argument>sub</argument>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="clock"/>
     </service>
     <service id="security.access_token_handler.oidc_discovery.http_client" class="Symfony\Contracts\HttpClient\HttpClientInterface" abstract="true">
@@ -5741,7 +5671,7 @@
     </service>
     <service id="security.access_token_handler.oauth2" class="Symfony\Component\Security\Http\AccessToken\OAuth2\Oauth2TokenHandler" abstract="true">
       <argument type="service" id="http_client.uri_template"/>
-      <argument type="service" id="monolog.logger" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="security.access_token_handler.oidc.generator" class="Symfony\Component\Security\Http\AccessToken\Oidc\OidcTokenGenerator" abstract="true">
       <argument type="abstract">signature algorithm</argument>
@@ -5867,7 +5797,7 @@
         <argument type="service" id="security.user.provider.concrete.users_in_memory"/>
       </argument>
       <argument>main</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="debug.security.event_dispatcher.main"/>
       <argument type="service" id="security.authentication.trust_resolver"/>
       <argument type="collection">
@@ -5885,7 +5815,7 @@
       <argument type="service" id="security.token_storage"/>
       <argument type="service" id="debug.security.event_dispatcher.main"/>
       <argument>main</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>true</argument>
       <argument type="constant">Symfony\Component\Security\Http\Authentication\ExposeSecurityLevel::None</argument>
       <argument type="collection"/>
@@ -5907,7 +5837,7 @@
       <argument>null</argument>
       <argument>null</argument>
       <argument>null</argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument>false</argument>
     </service>
     <service id="security.firewall.map.context.main" class="Symfony\Bundle\SecurityBundle\Security\LazyFirewallContext">
@@ -6376,68 +6306,6 @@
       <argument type="service" id="data_collector.dump" on-invalid="ignore"/>
       <argument>false</argument>
     </service>
-    <service id="monolog.logger" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>app</argument>
-      <call method="useMicrosecondTimestamps">
-        <argument>true</argument>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger_prototype" class="Monolog\Logger" abstract="true">
-      <argument type="abstract">channel</argument>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.activation_strategy.not_found" class="Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy" abstract="true">
-      <deprecated package="symfony/monolog-bundle" version="3.11">The "%service_id%" service is deprecated.</deprecated>
-    </service>
-    <service id="monolog.handler.fingers_crossed.error_level_activation_strategy" class="Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy" abstract="true">
-      <deprecated package="symfony/monolog-bundle" version="3.11">The "%service_id%" service is deprecated.</deprecated>
-    </service>
-    <service id="monolog.formatter.chrome_php" class="Monolog\Formatter\ChromePHPFormatter"/>
-    <service id="monolog.formatter.gelf_message" class="Monolog\Formatter\GelfMessageFormatter"/>
-    <service id="monolog.formatter.html" class="Monolog\Formatter\HtmlFormatter"/>
-    <service id="monolog.formatter.json" class="Monolog\Formatter\JsonFormatter"/>
-    <service id="monolog.formatter.line" class="Monolog\Formatter\LineFormatter"/>
-    <service id="monolog.formatter.syslog" class="Monolog\Formatter\SyslogFormatter"/>
-    <service id="monolog.formatter.loggly" class="Monolog\Formatter\LogglyFormatter"/>
-    <service id="monolog.formatter.normalizer" class="Monolog\Formatter\NormalizerFormatter"/>
-    <service id="monolog.formatter.scalar" class="Monolog\Formatter\ScalarFormatter"/>
-    <service id="monolog.formatter.wildfire" class="Monolog\Formatter\WildfireFormatter"/>
-    <service id="monolog.formatter.logstash" class="Monolog\Formatter\LogstashFormatter">
-      <argument>app</argument>
-    </service>
-    <service id="monolog.http_client" class="Symfony\Contracts\HttpClient\HttpClientInterface">
-      <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
-    </service>
-    <service id="monolog.processor.psr_log_message" class="Monolog\Processor\PsrLogMessageProcessor"/>
-    <service id="monolog.handler.main" class="Monolog\Handler\StreamHandler">
-      <tag name="kernel.reset" method="reset"/>
-      <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/log/dev.log</argument>
-      <argument>debug</argument>
-      <argument>true</argument>
-      <argument>null</argument>
-      <argument>false</argument>
-      <call method="pushProcessor">
-        <argument type="service" id="monolog.processor.psr_log_message"/>
-      </call>
-    </service>
-    <service id="monolog.handler.console" class="Symfony\Bridge\Monolog\Handler\ConsoleHandler">
-      <tag name="kernel.reset" method="reset"/>
-      <tag name="kernel.event_subscriber"/>
-      <tag name="container.no_preload"/>
-      <argument>null</argument>
-      <argument>true</argument>
-      <argument type="collection"/>
-      <argument type="collection"/>
-      <argument>false</argument>
-    </service>
     <service id="twig.extension.dump" class="Symfony\Bridge\Twig\Extension\DumpExtension">
       <tag name="twig.extension"/>
       <argument type="service" id="var_dumper.cloner"/>
@@ -6528,7 +6396,7 @@
     <service id="var_dumper.dump_server" class="Symfony\Component\VarDumper\Server\DumpServer">
       <tag name="monolog.logger" channel="debug"/>
       <argument>tcp://%env(VAR_DUMPER_SERVER)%</argument>
-      <argument type="service" id="monolog.logger.debug" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
     </service>
     <service id="var_dumper.command.server_dump" class="Symfony\Component\VarDumper\Command\ServerDumpCommand">
       <tag name="console.command"/>
@@ -6551,16 +6419,6 @@
       </call>
       <call method="setDescription">
         <argument>Start a dump server that collects and displays dumps in a single place</argument>
-      </call>
-    </service>
-    <service id="monolog.command.server_log" class="Symfony\Bridge\Monolog\Command\ServerLogCommand">
-      <tag name="console.command"/>
-      <tag name="container.no_preload"/>
-      <call method="setName">
-        <argument>server:log</argument>
-      </call>
-      <call method="setDescription">
-        <argument>Start a log server that displays logs in real time</argument>
       </call>
     </service>
     <service id="maker.file_manager" class="Symfony\Bundle\MakerBundle\FileManager">
@@ -6920,7 +6778,7 @@
       <tag name="container.decorator" id="security.event_dispatcher.main" inner="debug.security.event_dispatcher.main.inner"/>
       <argument type="service" id="debug.security.event_dispatcher.main.inner"/>
       <argument type="service" id="debug.stopwatch"/>
-      <argument type="service" id="monolog.logger.event" on-invalid="null"/>
+      <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="request_stack" on-invalid="null"/>
       <call method="addListener">
         <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
@@ -7842,10 +7700,6 @@
         <argument type="service" id="doctrine_migrations.schema_filter_listener"/>
       </argument>
     </service>
-    <service id="doctrine.dbal.logging_middleware.default" class="Doctrine\DBAL\Logging\Middleware">
-      <tag name="monolog.logger" channel="doctrine"/>
-      <argument type="service" id="monolog.logger.doctrine"/>
-    </service>
     <service id="doctrine.dbal.debug_middleware.default" class="Doctrine\Bundle\DoctrineBundle\Middleware\DebugMiddleware">
       <argument type="service" id="doctrine.debug_data_holder"/>
       <argument type="service" id="debug.stopwatch" on-invalid="null"/>
@@ -7895,152 +7749,13 @@
     <service id="security.ldap_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
-    <service id="monolog.logger.request" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>request</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
+    <service id="logger" class="Symfony\Component\HttpKernel\Log\Logger">
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument type="service" id="request_stack"/>
+      <argument>%env(bool:default::key:web:default:kernel.runtime_mode:)%</argument>
     </service>
-    <service id="monolog.logger.console" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>console</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.cache" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>cache</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.http_client" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>http_client</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.mailer" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>mailer</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.translation" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>translation</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.php" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>php</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.event" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>event</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.null_internal"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.router" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>router</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.profiler" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>profiler</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.doctrine" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>doctrine</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.security" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>security</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.debug" class="Monolog\Logger">
-      <tag name="monolog.channel_logger"/>
-      <argument>debug</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.logger.deprecation" class="Monolog\Logger" public="true">
-      <tag name="monolog.channel_logger"/>
-      <argument>deprecation</argument>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.console"/>
-      </call>
-      <call method="pushHandler">
-        <argument type="service" id="monolog.handler.main"/>
-      </call>
-      <configurator service="debug.debug_logger_configurator" method="pushDebugLogger"/>
-    </service>
-    <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
     <service id=".service_locator.6KVxCv0" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8133,17 +7848,17 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.kvOAK9B" method="withContext"/>
     </service>
-    <service id=".service_locator.3uPd9MT" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.TVmQFtt" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="routing.loader" type="service_closure" id="routing.loader"/>
       </argument>
     </service>
-    <service id=".service_locator.3uPd9MT.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.TVmQFtt.router.default" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="router.default"/>
       <argument>router.default</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator.3uPd9MT" method="withContext"/>
+      <factory service=".service_locator.TVmQFtt" method="withContext"/>
     </service>
     <service id=".service_locator.mFBT25N" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -8240,7 +7955,7 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="session_factory" type="service_closure" id="session.factory" on-invalid="ignore"/>
-        <argument key="logger" type="service_closure" id="monolog.logger" on-invalid="ignore"/>
+        <argument key="logger" type="service_closure" id="logger" on-invalid="ignore"/>
         <argument key="session_collector" type="service_closure" id="data_collector.request.session_collector" on-invalid="ignore"/>
         <argument key="request_stack" type="service_closure" id="request_stack" on-invalid="ignore"/>
       </argument>
@@ -8301,7 +8016,7 @@
     <service id="debug.event_dispatcher.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id="debug.controller_resolver.inner" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver">
       <argument type="service" id="service_container"/>
-      <argument type="service" id="monolog.logger.request" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <call method="allowControllers">
         <argument type="collection">
           <argument>Symfony\Bundle\FrameworkBundle\Controller\AbstractController</argument>
@@ -8933,13 +8648,6 @@
       <argument>false</argument>
       <argument type="service_closure" id="var_dumper.command.server_dump"/>
     </service>
-    <service id=".monolog.command.server_log.lazy" class="Symfony\Component\Console\Command\LazyCommand">
-      <argument>server:log</argument>
-      <argument type="collection"/>
-      <argument>Start a log server that displays logs in real time</argument>
-      <argument>false</argument>
-      <argument type="service_closure" id="monolog.command.server_log"/>
-    </service>
     <service id=".maker.auto_command.make_auth.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>make:auth</argument>
       <argument type="collection"/>
@@ -9136,7 +8844,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.Ai_2bJW"/>
+      <argument type="service" id=".service_locator.jS3oBlx"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -9212,7 +8920,6 @@
         <argument key="debug:twig">twig.command.debug</argument>
         <argument key="lint:twig">twig.command.lint</argument>
         <argument key="server:dump">var_dumper.command.server_dump</argument>
-        <argument key="server:log">monolog.command.server_log</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:twig-component">maker.auto_command.make_twig_component</argument>
@@ -9245,7 +8952,7 @@
         <argument key="make:webhook">maker.auto_command.make_webhook</argument>
       </argument>
     </service>
-    <service id=".service_locator.Ai_2bJW" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.jS3oBlx" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
@@ -9322,7 +9029,6 @@
         <argument key="twig.command.debug" type="service_closure" id=".twig.command.debug.lazy"/>
         <argument key="twig.command.lint" type="service_closure" id=".twig.command.lint.lazy"/>
         <argument key="var_dumper.command.server_dump" type="service_closure" id=".var_dumper.command.server_dump.lazy"/>
-        <argument key="monolog.command.server_log" type="service_closure" id=".monolog.command.server_log.lazy"/>
         <argument key="maker.auto_command.make_auth" type="service_closure" id=".maker.auto_command.make_auth.lazy"/>
         <argument key="maker.auto_command.make_command" type="service_closure" id=".maker.auto_command.make_command.lazy"/>
         <argument key="maker.auto_command.make_twig_component" type="service_closure" id=".maker.auto_command.make_twig_component.lazy"/>
@@ -9358,7 +9064,7 @@
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/share/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.system.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9366,7 +9072,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.validator.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9374,7 +9080,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.serializer.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9382,7 +9088,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.property_info.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9390,7 +9096,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.http_client.pool.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
@@ -9399,7 +9105,7 @@
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/share/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
-        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+        <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.validator_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9407,7 +9113,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.doctrine.orm.default.result.recorder_inner" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
@@ -9417,7 +9123,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.security_is_granted_attribute_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9425,7 +9131,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.security_is_csrf_token_valid_attribute_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9433,7 +9139,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.webpack_encore.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
@@ -9441,7 +9147,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <argument>/Users/theoalanore/Documents/GitHub/GYH_App/var/cache/dev/pools/system</argument>
-      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id=".service_locator.Q0sD6Xk" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -9589,8 +9295,6 @@
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker"/>
     <service id="Twig\Environment" alias="twig"/>
     <service id="Symfony\Component\Mime\BodyRendererInterface" alias="twig.mime_body_renderer"/>
-    <service id="logger" alias="monolog.logger"/>
-    <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollectionInterface" alias="webpack_encore.entrypoint_lookup_collection"/>
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface" alias="webpack_encore.entrypoint_lookup[_default]"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.ryAvHi4" public="true"/>
@@ -9598,34 +9302,7 @@
     <service id="argument_resolver.controller_locator" alias=".service_locator.oLuvPav"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.W55Po6X"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
-    <service id=".Psr\Log\LoggerInterface $request.logger" alias="monolog.logger.request"/>
-    <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
-    <service id=".Psr\Log\LoggerInterface $console.logger" alias="monolog.logger.console"/>
-    <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
-    <service id=".Psr\Log\LoggerInterface $cache.logger" alias="monolog.logger.cache"/>
-    <service id="Psr\Log\LoggerInterface $cacheLogger" alias="monolog.logger.cache"/>
-    <service id=".Psr\Log\LoggerInterface $http_client.logger" alias="monolog.logger.http_client"/>
-    <service id="Psr\Log\LoggerInterface $httpClientLogger" alias="monolog.logger.http_client"/>
-    <service id=".Psr\Log\LoggerInterface $mailer.logger" alias="monolog.logger.mailer"/>
-    <service id="Psr\Log\LoggerInterface $mailerLogger" alias="monolog.logger.mailer"/>
-    <service id=".Psr\Log\LoggerInterface $translation.logger" alias="monolog.logger.translation"/>
-    <service id="Psr\Log\LoggerInterface $translationLogger" alias="monolog.logger.translation"/>
-    <service id=".Psr\Log\LoggerInterface $php.logger" alias="monolog.logger.php"/>
-    <service id="Psr\Log\LoggerInterface $phpLogger" alias="monolog.logger.php"/>
-    <service id=".Psr\Log\LoggerInterface $event.logger" alias="monolog.logger.event"/>
-    <service id="Psr\Log\LoggerInterface $eventLogger" alias="monolog.logger.event"/>
-    <service id=".Psr\Log\LoggerInterface $router.logger" alias="monolog.logger.router"/>
-    <service id="Psr\Log\LoggerInterface $routerLogger" alias="monolog.logger.router"/>
-    <service id=".Psr\Log\LoggerInterface $profiler.logger" alias="monolog.logger.profiler"/>
-    <service id="Psr\Log\LoggerInterface $profilerLogger" alias="monolog.logger.profiler"/>
-    <service id=".Psr\Log\LoggerInterface $doctrine.logger" alias="monolog.logger.doctrine"/>
-    <service id="Psr\Log\LoggerInterface $doctrineLogger" alias="monolog.logger.doctrine"/>
-    <service id=".Psr\Log\LoggerInterface $security.logger" alias="monolog.logger.security"/>
-    <service id="Psr\Log\LoggerInterface $securityLogger" alias="monolog.logger.security"/>
-    <service id=".Psr\Log\LoggerInterface $debug.logger" alias="monolog.logger.debug"/>
-    <service id="Psr\Log\LoggerInterface $debugLogger" alias="monolog.logger.debug"/>
-    <service id=".Psr\Log\LoggerInterface $deprecation.logger" alias="monolog.logger.deprecation"/>
-    <service id="Psr\Log\LoggerInterface $deprecationLogger" alias="monolog.logger.deprecation"/>
+    <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias="http_client.uri_template"/>
     <service id="http_client.uri_template.inner" alias=".debug.http_client"/>
