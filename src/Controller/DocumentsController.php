@@ -5,16 +5,20 @@ namespace App\Controller;
 use App\Entity\Documents;
 use App\Form\DocumentsType;
 use App\Repository\DocumentsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/documents')]
 class DocumentsController extends AbstractController
 {
-    /**
-     * @Route("/documents/", name="documents_index", methods={"GET"})
-     */
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
+    #[Route('/', name: 'documents_index', methods: ['GET'])]
     public function index(DocumentsRepository $documentsRepository): Response
     {
         return $this->render('documents/index.html.twig', [
@@ -22,9 +26,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/documents/new", name="documents_new", methods={"GET", "POST"})
-     */
+    #[Route('/new', name: 'documents_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $document = new Documents();
@@ -32,9 +34,8 @@ class DocumentsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($document);
-            $entityManager->flush();
+            $this->entityManager->persist($document);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('documents_index');
         }
@@ -45,9 +46,7 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/documents/{id}", name="documents_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'documents_show', methods: ['GET'])]
     public function show(Documents $document): Response
     {
         return $this->render('documents/show.html.twig', [
@@ -55,16 +54,14 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/documents/{id}/edit", name="documents_edit", methods={"GET", "POST"})
-     */
+    #[Route('/{id}/edit', name: 'documents_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Documents $document): Response
     {
         $form = $this->createForm(DocumentsType::class, $document);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('documents_index');
         }
@@ -75,15 +72,12 @@ class DocumentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/documents/{id}", name="documents_delete", methods={"DELETE"})
-     */
+    #[Route('/{id}', name: 'documents_delete', methods: ['DELETE'])]
     public function delete(Request $request, Documents $document): Response
     {
         if ($this->isCsrfTokenValid('delete'.$document->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($document);
-            $entityManager->flush();
+            $this->entityManager->remove($document);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('documents_index');

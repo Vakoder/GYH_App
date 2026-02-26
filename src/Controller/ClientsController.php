@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Clients;
 use App\Form\ClientsType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/clients')]
 class ClientsController extends AbstractController
 {
-    /**
-     * @Route("/clients/", name="clients_index", methods={"GET"})
-     */
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
+    #[Route('/', name: 'clients_index', methods: ['GET'])]
     public function index(): Response
     {
-        $clients = $this->getDoctrine()
+        $clients = $this->entityManager
             ->getRepository(Clients::class)
             ->findAll();
 
@@ -25,9 +29,7 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/clients/new", name="clients_new", methods={"GET", "POST"})
-     */
+    #[Route('/new', name: 'clients_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $client = new Clients();
@@ -35,9 +37,8 @@ class ClientsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($client);
-            $entityManager->flush();
+            $this->entityManager->persist($client);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('clients_index');
         }
@@ -48,9 +49,7 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/clients/{id}", name="clients_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'clients_show', methods: ['GET'])]
     public function show(Clients $client): Response
     {
         return $this->render('clients/show.html.twig', [
@@ -58,16 +57,14 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/clients/{id}/edit", name="clients_edit", methods={"GET", "POST"})
-     */
+    #[Route('/{id}/edit', name: 'clients_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Clients $client): Response
     {
         $form = $this->createForm(ClientsType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('clients_index');
         }
@@ -78,47 +75,14 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/clients/{id}", name="clients_delete", methods={"DELETE"})
-     */
+    #[Route('/{id}', name: 'clients_delete', methods: ['DELETE'])]
     public function delete(Request $request, Clients $client): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($client);
-            $entityManager->flush();
+            $this->entityManager->remove($client);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('clients_index');
     }
-
-    /**
-     * Base de prog 
-     * 
-     * Typage : int, string, float, double
-     * structure de controle : for, while, do...while
-     * structure conditionnelle : if, switch
-     * fonctions
-     * 
-     * POO
-     * 
-     * attributs de classe
-     * méthodes
-     * getter & setter
-     * constructeur
-     * polymorphismes
-     * héritage
-     * 
-     * MVC => Méthode d'organisation de code
-     * Model => Gérer la données => SQL, NoSQL
-     * View => Frontend, affichage utilisateur, UI
-     * Controller => Pont entre les views et les models (logique applicative)
-     * 
-     */
-
-     /**
-      * Utilisation de JS
-      * Node => Controller & Model => backend
-      * Reactjs => View => frontend
-      */
 }

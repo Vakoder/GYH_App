@@ -6,41 +6,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ProjetsEtapes
- *
- * @ORM\Table(name="projets_etapes")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'projets_etapes')]
+#[ORM\Entity]
 class ProjetsEtapes
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_projet", type="integer", nullable=false)
-     */
-    private $idProjet;
+    #[ORM\Column(name: 'id_projet', type: 'integer', nullable: false)]
+    private int $idProjet = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_etape", type="integer", nullable=false)
-     */
-    private $idEtape;
+    #[ORM\Column(name: 'id_etape', type: 'integer', nullable: false)]
+    private int $idEtape = 0;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Projets::class, mappedBy="etapes")
-     */
-    private $projets;
+    #[ORM\ManyToMany(targetEntity: Projets::class, mappedBy: 'etapes')]
+    private Collection $projets;
 
     public function __construct()
     {
@@ -102,6 +84,4 @@ class ProjetsEtapes
 
         return $this;
     }
-
-
 }

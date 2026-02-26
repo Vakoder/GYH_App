@@ -4,38 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ProjetsEtat
- *
- * @ORM\Table(name="projets_etat")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'projets_etat')]
+#[ORM\Entity]
 class ProjetsEtat
 {
-    public function __toString()
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'libelle', type: 'string', length: 50, nullable: false)]
+    private string $libelle = '';
+
+    #[ORM\OneToOne(targetEntity: Projets::class, mappedBy: 'etat', cascade: ['persist', 'remove'])]
+    private ?Projets $projets = null;
+
+    public function __toString(): string
     {
         return $this->libelle;
     }
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="libelle", type="string", length=50, nullable=false)
-     */
-    private $libelle;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Projets::class, mappedBy="etat", cascade={"persist", "remove"})
-     */
-    private $projets;
 
     public function getId(): ?int
     {
@@ -70,6 +57,4 @@ class ProjetsEtat
 
         return $this;
     }
-
-
 }

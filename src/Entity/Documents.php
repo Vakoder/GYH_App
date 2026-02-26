@@ -7,35 +7,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DocumentsRepository::class)
- */
+#[ORM\Entity(repositoryClass: DocumentsRepository::class)]
 class Documents
 {
-    public function __toString()
-    {
-        return $this->nom;
-    }
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name = '';
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Projets::class, mappedBy="documents")
-     */
-    private $projets;
+    #[ORM\ManyToMany(targetEntity: Projets::class, mappedBy: 'documents')]
+    private Collection $projets;
 
     public function __construct()
     {
         $this->projets = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

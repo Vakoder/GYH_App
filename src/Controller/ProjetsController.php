@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Projets;
 use App\Form\Projets2Type;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/projets')]
 class ProjetsController extends AbstractController
 {
-    /**
-     * @Route("/projets/", name="projets_index", methods={"GET"})
-     */
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
+    #[Route('/', name: 'projets_index', methods: ['GET'])]
     public function index(): Response
     {
-        $projets = $this->getDoctrine()
+        $projets = $this->entityManager
             ->getRepository(Projets::class)
             ->findAll();
 
@@ -25,9 +29,7 @@ class ProjetsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/projets/new", name="projets_new", methods={"GET", "POST"})
-     */
+    #[Route('/new', name: 'projets_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $projet = new Projets();
@@ -35,9 +37,8 @@ class ProjetsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($projet);
-            $entityManager->flush();
+            $this->entityManager->persist($projet);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('projets_index');
         }
@@ -48,9 +49,7 @@ class ProjetsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/projets/{id}", name="projets_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'projets_show', methods: ['GET'])]
     public function show(Projets $projet): Response
     {
         return $this->render('projets/show.html.twig', [
@@ -58,16 +57,14 @@ class ProjetsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/projets/{id}/edit", name="projets_edit", methods={"GET", "POST"})
-     */
+    #[Route('/{id}/edit', name: 'projets_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Projets $projet): Response
     {
         $form = $this->createForm(Projets2Type::class, $projet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('projets_index');
         }
@@ -78,15 +75,12 @@ class ProjetsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/projets/{id}", name="projets_delete", methods={"DELETE"})
-     */
+    #[Route('/{id}', name: 'projets_delete', methods: ['DELETE'])]
     public function delete(Request $request, Projets $projet): Response
     {
         if ($this->isCsrfTokenValid('delete'.$projet->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($projet);
-            $entityManager->flush();
+            $this->entityManager->remove($projet);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('projets_index');

@@ -6,91 +6,47 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Clients
- *
- * @ORM\Table(name="clients")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'clients')]
+#[ORM\Entity]
 class Clients
 {
-    public function __toString()
-    {
-        return $this->nom." ".$this->prenom;
-    }
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy:'IDENTITY')]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=20, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(name: 'nom', type: 'string', length: 20, nullable: false)]
+    private string $nom = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=20, nullable=false)
-     */
-    private $prenom;
+    #[ORM\Column(name: 'prenom', type: 'string', length: 20, nullable: false)]
+    private string $prenom = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_naissance", type="date", nullable=false)
-     */
-    private $dateNaissance;
+    #[ORM\Column(name: 'adresse', type: 'string', length: 100, nullable: false)]
+    private string $adresse = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=100, nullable=false)
-     */
-    private $adresse;
+    #[ORM\Column(name: 'code_postale', type: 'integer', nullable: false)]
+    private int $codePostale = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="code_postale", type="integer", nullable=false)
-     */
-    private $codePostale;
+    #[ORM\Column(name: 'ville', type: 'string', length: 50, nullable: false)]
+    private string $ville = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ville", type="string", length=50, nullable=false)
-     */
-    private $ville;
+    #[ORM\Column(name: 'telephone', type: 'string', length: 15, nullable: false)]
+    private string $telephone = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="telephone", type="string", length=15, nullable=false)
-     */
-    private $telephone;
+    #[ORM\Column(name: 'email', type: 'string', length: 50, nullable: false)]
+    private string $email = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=50, nullable=false)
-     */
-    private $email;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Projets::class, mappedBy="client")
-     */
-    private $projets;
+    #[ORM\OneToMany(targetEntity: Projets::class, mappedBy: 'client')]
+    private Collection $projets;
 
     public function __construct()
     {
         $this->projets = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom . ' ' . $this->prenom;
     }
 
     public function getId(): ?int

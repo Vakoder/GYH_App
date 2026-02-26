@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Etapes;
 use App\Form\EtapesType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/etapes')]
 class EtapesController extends AbstractController
 {
-    /**
-     * @Route("/etapes/", name="etapes_index", methods={"GET"})
-     */
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
+    #[Route('/', name: 'etapes_index', methods: ['GET'])]
     public function index(): Response
     {
-        $etapes = $this->getDoctrine()
+        $etapes = $this->entityManager
             ->getRepository(Etapes::class)
             ->findAll();
 
@@ -25,9 +29,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/etapes/new", name="etapes_new", methods={"GET", "POST"})
-     */
+    #[Route('/new', name: 'etapes_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $etape = new Etapes();
@@ -35,9 +37,8 @@ class EtapesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($etape);
-            $entityManager->flush();
+            $this->entityManager->persist($etape);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('etapes_index');
         }
@@ -48,9 +49,7 @@ class EtapesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/etapes/{id}", name="etapes_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'etapes_show', methods: ['GET'])]
     public function show(Etapes $etape): Response
     {
         return $this->render('etapes/show.html.twig', [
@@ -58,16 +57,14 @@ class EtapesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/etapes/{id}/edit", name="etapes_edit", methods={"GET", "POST"})
-     */
+    #[Route('/{id}/edit', name: 'etapes_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Etapes $etape): Response
     {
         $form = $this->createForm(EtapesType::class, $etape);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('etapes_index');
         }
@@ -78,15 +75,12 @@ class EtapesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/etapes/{id}", name="etapes_delete", methods={"DELETE"})
-     */
+    #[Route('/{id}', name: 'etapes_delete', methods: ['DELETE'])]
     public function delete(Request $request, Etapes $etape): Response
     {
         if ($this->isCsrfTokenValid('delete'.$etape->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($etape);
-            $entityManager->flush();
+            $this->entityManager->remove($etape);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('etapes_index');

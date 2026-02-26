@@ -4,29 +4,17 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Etapes
- *
- * @ORM\Table(name="etapes")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'etapes')]
+#[ORM\Entity]
 class Etapes
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="libelle", type="string", length=100, nullable=false)
-     */
-    private $libelle;
+    #[ORM\Column(name: 'libelle', type: 'string', length: 100, nullable: false)]
+    private string $libelle = '';
 
     public function getId(): ?int
     {
@@ -44,6 +32,4 @@ class Etapes
 
         return $this;
     }
-
-
 }
