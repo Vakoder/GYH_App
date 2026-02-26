@@ -10,13 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/documents")
- */
 class DocumentsController extends AbstractController
 {
     /**
-     * @Route("/", name="documents_index", methods={"GET"})
+     * @Route("/documents/", name="documents_index", methods={"GET"})
      */
     public function index(DocumentsRepository $documentsRepository): Response
     {
@@ -26,7 +23,7 @@ class DocumentsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="documents_new", methods={"GET","POST"})
+     * @Route("/documents/new", name="documents_new", methods={"GET", "POST"})
      */
     public function new(Request $request): Response
     {
@@ -49,7 +46,7 @@ class DocumentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="documents_show", methods={"GET"})
+     * @Route("/documents/{id}", name="documents_show", methods={"GET"})
      */
     public function show(Documents $document): Response
     {
@@ -59,7 +56,7 @@ class DocumentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="documents_edit", methods={"GET","POST"})
+     * @Route("/documents/{id}/edit", name="documents_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Documents $document): Response
     {
@@ -79,7 +76,7 @@ class DocumentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="documents_delete", methods={"DELETE"})
+     * @Route("/documents/{id}", name="documents_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Documents $document): Response
     {

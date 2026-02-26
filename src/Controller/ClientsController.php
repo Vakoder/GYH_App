@@ -9,13 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/clients")
- */
 class ClientsController extends AbstractController
 {
     /**
-     * @Route("/", name="clients_index", methods={"GET"})
+     * @Route("/clients/", name="clients_index", methods={"GET"})
      */
     public function index(): Response
     {
@@ -29,7 +26,7 @@ class ClientsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="clients_new", methods={"GET","POST"})
+     * @Route("/clients/new", name="clients_new", methods={"GET", "POST"})
      */
     public function new(Request $request): Response
     {
@@ -52,7 +49,7 @@ class ClientsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="clients_show", methods={"GET"})
+     * @Route("/clients/{id}", name="clients_show", methods={"GET"})
      */
     public function show(Clients $client): Response
     {
@@ -62,7 +59,7 @@ class ClientsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="clients_edit", methods={"GET","POST"})
+     * @Route("/clients/{id}/edit", name="clients_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Clients $client): Response
     {
@@ -82,7 +79,7 @@ class ClientsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="clients_delete", methods={"DELETE"})
+     * @Route("/clients/{id}", name="clients_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Clients $client): Response
     {

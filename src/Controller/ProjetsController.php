@@ -9,13 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/projets")
- */
 class ProjetsController extends AbstractController
 {
     /**
-     * @Route("/", name="projets_index", methods={"GET"})
+     * @Route("/projets/", name="projets_index", methods={"GET"})
      */
     public function index(): Response
     {
@@ -29,7 +26,7 @@ class ProjetsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="projets_new", methods={"GET","POST"})
+     * @Route("/projets/new", name="projets_new", methods={"GET", "POST"})
      */
     public function new(Request $request): Response
     {
@@ -52,7 +49,7 @@ class ProjetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="projets_show", methods={"GET"})
+     * @Route("/projets/{id}", name="projets_show", methods={"GET"})
      */
     public function show(Projets $projet): Response
     {
@@ -62,7 +59,7 @@ class ProjetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="projets_edit", methods={"GET","POST"})
+     * @Route("/projets/{id}/edit", name="projets_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Projets $projet): Response
     {
@@ -82,7 +79,7 @@ class ProjetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="projets_delete", methods={"DELETE"})
+     * @Route("/projets/{id}", name="projets_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Projets $projet): Response
     {
