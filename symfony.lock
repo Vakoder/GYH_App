@@ -1,14 +1,4 @@
 {
-    "doctrine/annotations": {
-        "version": "2.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.10",
-            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
-        },
-        "files": []
-    },
     "doctrine/cache": {
         "version": "1.10.2"
     },
@@ -83,12 +73,6 @@
     },
     "egulias/email-validator": {
         "version": "2.1.25"
-    },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.3"
-    },
-    "laminas/laminas-code": {
-        "version": "3.4.1"
     },
     "laminas/laminas-eventmanager": {
         "version": "3.3.0"
@@ -362,9 +346,6 @@
         "version": "v5.2.3"
     },
     "symfony/property-info": {
-        "version": "v5.2.3"
-    },
-    "symfony/proxy-manager-bridge": {
         "version": "v5.2.3"
     },
     "symfony/routing": {
