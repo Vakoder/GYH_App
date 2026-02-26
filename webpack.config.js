@@ -75,4 +75,12 @@ Encore
     //.autoProvidejQuery()
 ;
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+
+// Add stimulus bridge configuration
+config.resolve.alias = {
+    ...config.resolve.alias,
+    '@symfony/stimulus-bridge/controllers.json': require('path').resolve(__dirname, './assets/controllers.json'),
+};
+
+module.exports = config;
